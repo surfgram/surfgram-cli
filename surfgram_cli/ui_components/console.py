@@ -11,9 +11,9 @@ class ConsoleComponent:
     """Component for consistent console output and status messages"""
 
     def __init__(self):
-        self._graphics_enabled: bool = False  # Приватное поле для хранения состояния
-        self.console = None  # Инициализация отложена до первого вызова
-        self._init_console()  # Сразу инициализируем консоль
+        self._graphics_enabled: bool = False
+        self.console = None
+        self._init_console()
 
     def _init_console(self):
         """Initialize console based on graphics_enabled"""
@@ -24,13 +24,13 @@ class ConsoleComponent:
 
             self.console = Console()
         else:
-            self.console = None  # В текстовом режиме rich не используется
+            self.console = None # кринжанул
 
     def set_status(self, graphics: bool = True) -> None:
         """Enable/disable rich graphics and immediately apply changes"""
-        if self._graphics_enabled != graphics:  # Если состояние изменилось
+        if self._graphics_enabled != graphics:
             self._graphics_enabled = graphics
-            self._init_console()  # Переинициализируем консоль
+            self._init_console()
 
     @property
     def graphics_enabled(self) -> bool:

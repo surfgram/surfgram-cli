@@ -62,8 +62,7 @@ def delete(
     if console.confirm(
         f"⚠️  Are you sure you want to delete the bot '{bot_name}'?", default=False
     ):
-        with console.print_status("Deleting bot..."):
-            BotManager.delete_bot(bot_name)
+        BotManager.delete_bot(bot_name)
         console.print_success_message(f"✅ Bot '{bot_name}' has been deleted")
     else:
         console.print_cancel("Deletion cancelled.")
