@@ -1,0 +1,55 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "surfgram-cli"
+version = "1.0.0"
+description = "CLI tool for Surfgram Telegram bot framework"
+authors = ["anybody <help.surfgram@email.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/surfgram/surfgram"
+repository = "https://github.com/surfgram/surfgram-cli"
+keywords = [
+    "telegram",
+    "bot",
+    "cli",
+    "terminal",
+    "typer",
+    "rich",
+    "automation",
+    "devtools",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Communications :: Chat",
+    "Typing :: Typed",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = { extras = ["all"], version = "^0.9.0" }
+rich = "^13.7.0"
+watchdog = "^2.1.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
+pytest-asyncio = "^0.23.0"
+black = "^24.1.0"
+ruff = "^0.2.0"
+mypy = "^1.5.0"
+
+[tool.poetry.scripts]
+surfgram-cli = "surfgram_cli.main:app"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/surfgram/surfgram-cli/issues"
+"Changelog" = "https://github.com/surfgram/surfgram-cli/releases"
