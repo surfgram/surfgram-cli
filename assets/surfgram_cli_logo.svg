@@ -1,7 +1,4 @@
 <svg viewBox="0 0 400 140" width="400" height="140" xmlns="http://www.w3.org/2000/svg">
-  <title>Surfgram Logo</title>
-  <desc>A gradient text logo reading "Surfgram" with subtitle "Like a surfer on the waves"</desc>
-  
   <defs>
     <linearGradient id="mainGradient" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
       <stop offset="0%" stop-color="#ea580c"/>
