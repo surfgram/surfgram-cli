@@ -44,7 +44,7 @@ Surfgram CLI is the built-in command-line toolkit that comes with Surfgram, desi
 3. Run the bot:
 
     ```bash
-    surfgram run my_bot
+    surfgram run --bot my_bot
     ```
 
 ## Contributing
