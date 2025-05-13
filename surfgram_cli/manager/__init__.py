@@ -11,6 +11,7 @@ from surfgram import configs as surfgram_configs
 from surfgram_cli.utils import monitor_changes, debugger
 from surfgram_cli.cli import console
 
+
 class BotManager:
     """Bot management core functionality"""
 
@@ -25,7 +26,12 @@ class BotManager:
         bot_path = Path(bot_name)
 
         if bot_path.exists():
-            if console.prompt(f"Directory '{bot_name}' exists. Overwrite? (y/N): ").lower() != 'y':
+            if (
+                console.prompt(
+                    f"Directory '{bot_name}' exists. Overwrite? (y/N): "
+                ).lower()
+                != "y"
+            ):
                 return False
             shutil.rmtree(bot_path)
 
@@ -33,7 +39,9 @@ class BotManager:
         for template in env.list_templates():
             output = bot_path / template.replace(".j2", "")
             output.parent.mkdir(parents=True, exist_ok=True)
-            output.write_text(env.get_template(template).render(bot_name=bot_name, token=token))
+            output.write_text(
+                env.get_template(template).render(bot_name=bot_name, token=token)
+            )
         return True
 
     @staticmethod
@@ -72,12 +80,13 @@ class BotManager:
                     f"1. Missing __init__.py\n"
                     f"2. Incorrect Python package structure"
                 ) from e
-            raise ImportError(f"Missing dependency: {e.name}\nFix: pip install {e.name}") from e
+            raise
 
         config_classes = [
-            name for name, cls in inspect.getmembers(bot_module, inspect.isclass)
-            if isinstance(cls, type) 
-            and issubclass(cls, surfgram_configs.BaseConfig) 
+            name
+            for name, cls in inspect.getmembers(bot_module, inspect.isclass)
+            if isinstance(cls, type)
+            and issubclass(cls, surfgram_configs.BaseConfig)
             and cls != surfgram_configs.BaseConfig
         ]
 
@@ -95,7 +104,7 @@ class BotManager:
         console.print_cancel(f"Multiple configs found in {module_name}:")
         for i, name in enumerate(config_classes, 1):
             console.print_cancel(f"{i}. {module_name}.{name}")
-        
+
         choice = console.prompt("Select config (number)")
         try:
             return f"{module_name}.{config_classes[int(choice)-1]}"
@@ -116,10 +125,8 @@ class BotManager:
     def _validate_config_class(module, class_name: str) -> type:
         """Validates that the config class exists and is correct."""
         if not hasattr(module, class_name):
-            available = [n for n, _ in inspect.getmembers(module, inspect.isclass)]
             raise AttributeError(
-                f"Class '{class_name}' not found in '{module.__name__}'\n"
-                f"Available classes: {', '.join(available)}"
+                f"Class '{class_name}' not found in '{module.__name__}'"
             )
         config_class = getattr(module, class_name)
         if not isinstance(config_class, type):
@@ -133,7 +140,7 @@ class BotManager:
             if isinstance(value, str):
                 if value.isdigit():
                     setattr(config_instance, field, int(value))
-                elif value.replace('.', '', 1).isdigit() and value.count('.') == 1:
+                elif value.replace(".", "", 1).isdigit() and value.count(".") == 1:
                     setattr(config_instance, field, float(value))
 
     @staticmethod
@@ -151,10 +158,10 @@ class BotManager:
             module_name, class_name = BotManager._parse_config(config)
             module = importlib.import_module(module_name)
             config_class = BotManager._validate_config_class(module, class_name)
-            
+
             temp_config = config_class()
             BotManager._cast_config_values(temp_config)
-            
+
         except ModuleNotFoundError as e:
             if e.name == module_name:
                 raise ImportError(
@@ -164,15 +171,13 @@ class BotManager:
                     f"2. Is the package in correct location?"
                 ) from e
             raise
-            
+
         debugger.debug_mode = debug
         bot_instance = Bot(config=config_class)
 
         if on_reload:
             threading.Thread(
-                target=monitor_changes,
-                args=(bot_instance, str(bot_dir)),
-                daemon=True
+                target=monitor_changes, args=(bot_instance, str(bot_dir)), daemon=True
             ).start()
 
         bot_instance.listen()

@@ -24,7 +24,11 @@ class ConsoleComponent:
 
             self.console = Console()
         else:
+<<<<<<< Updated upstream
             self.console = None  # В текстовом режиме rich не используется
+=======
+            self.console = None  # кринжанул
+>>>>>>> Stashed changes
 
     def set_status(self, graphics: bool = True) -> None:
         """Enable/disable rich graphics and immediately apply changes"""

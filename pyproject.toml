@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "surfgram-cli"
-version = "1.0.0"
+version = "1.0.2"
 description = "CLI tool for Surfgram Telegram bot framework"
 authors = ["anybody <help.surfgram@email.com>"]
 license = "MIT"
@@ -39,8 +39,11 @@ python = "^3.9"
 typer = { extras = ["all"], version = "^0.9.0" }
 rich = "^13.7.0"
 watchdog = "^2.1.6"
+pyfiglet = "1.0.2"
+jinja2 = "3.1.6"
+dotenv = "0.9.9"
 
-[tool.poetry.dev-dependencies]
+[poetry.group.dev.dependencies]
 pytest = "^7.0"
 pytest-asyncio = "^0.23.0"
 black = "^24.1.0"

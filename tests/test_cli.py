@@ -2,8 +2,9 @@ import pytest
 from unittest.mock import MagicMock
 from surfgram_cli import app
 
+
 class TestSurfgramCLI:
-    
+
     @pytest.fixture(autouse=True)
     def setup_method(self, monkeypatch):
         # Mock ConsoleComponent
@@ -49,24 +50,30 @@ class TestSurfgramCLI:
     def test_delete_bot_confirmation(self):
         """Test deletion of a bot after confirmation"""
         self.console_mock.confirm.return_value = True
-        
+
         result = app.invoke(app.delete, bot_name="TestBot")
         assert result.exit_code == 0
         self.bot_manager_mock.delete_bot.assert_called_once_with("TestBot")
-        self.console_mock.print_success_message.assert_called_once_with("✅ Bot 'TestBot' has been deleted")
+        self.console_mock.print_success_message.assert_called_once_with(
+            "✅ Bot 'TestBot' has been deleted"
+        )
 
     def test_delete_bot_canceled(self):
         """Test deletion of a bot when canceled"""
         self.console_mock.confirm.return_value = False
-        
+
         result = app.invoke(app.delete, bot_name="TestBot")
         assert result.exit_code == 0
         self.bot_manager_mock.delete_bot.assert_not_called()
         self.console_mock.print_cancel.assert_called_once_with("Deletion cancelled.")
-    
+
     def test_run_bot(self):
         """Test running of a bot"""
         self.bot_manager_mock.run_bot.return_value = None
-        result = app.invoke(app.run, bot="TestBotDir", config="TestConfigClass", debug=True)
+        result = app.invoke(
+            app.run, bot="TestBotDir", config="TestConfigClass", debug=True
+        )
         assert result.exit_code == 0
-        self.bot_manager_mock.run_bot.assert_called_once_with("TestBotDir", "TestBotDir.TestConfigClass", True, False)
+        self.bot_manager_mock.run_bot.assert_called_once_with(
+            "TestBotDir", "TestBotDir.TestConfigClass", True, False
+        )

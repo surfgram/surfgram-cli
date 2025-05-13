@@ -73,34 +73,36 @@ def delete(
 @handle_exceptions("Bot startup")
 def run(
     bot: str = typer.Option(
-        None, 
-        "--bot", "-b",
+        None,
+        "--bot",
+        "-b",
         help="Directory containing the bot. Defaults to current directory.",
-        show_default=False
+        show_default=False,
     ),
     config: str = typer.Option(
         None,
-        "--config", "-c",
+        "--config",
+        "-c",
         help="Config class in format 'module.ConfigClass'. Auto-detected if not specified.",
-        show_default=False
+        show_default=False,
     ),
     debug: bool = typer.Option(
         False,
         "--debug",
         help="Enable debug mode with verbose logging.",
-        show_default=True
+        show_default=True,
     ),
     autoreload: bool = typer.Option(
         False,
         "--autoreload",
         help="Automatically reload bot on source changes.",
-        show_default=True
+        show_default=True,
     ),
     full_trace: bool = typer.Option(
         False,
         "--full-trace",
         help="Show complete error tracebacks when enabled.",
-        show_default=True
+        show_default=True,
     ),
 ):
     """Run a Telegram bot with production-grade error handling."""
@@ -111,8 +113,9 @@ def run(
 
     # Resolve bot directory
     bot_dir = Path(bot).resolve() if bot else Path.cwd().resolve()
-    config = BotManager.find_config(str(bot_dir))
-        
+    if not config:
+        config = BotManager.find_config(str(bot_dir))
+
     # Validate config format before proceeding
     try:
         module_part, class_part = config.rsplit(".", 1)
@@ -125,16 +128,10 @@ def run(
         )
 
     console.print_config_status(
-        debug=debug,
-        on_reload=autoreload,
-        bot=str(bot_dir),
-        config=config
+        debug=debug, on_reload=autoreload, bot=str(bot_dir), config=config
     )
 
     # Execute with proper error handling
     BotManager.run_bot(
-        bot=str(bot_dir),
-        config=config,
-        debug=debug,
-        on_reload=autoreload
+        bot=str(bot_dir), config=config, debug=debug, on_reload=autoreload
     )
