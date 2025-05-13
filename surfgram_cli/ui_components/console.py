@@ -24,8 +24,8 @@ class ConsoleComponent:
 
             self.console = Console()
         else:
-            self.console = None # кринжанул
-
+          self.console = None
+          
     def set_status(self, graphics: bool = True) -> None:
         """Enable/disable rich graphics and immediately apply changes"""
         if self._graphics_enabled != graphics:
