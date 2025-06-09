@@ -1,5 +1,4 @@
 import typer
-import os
 from .ui_components import BannerComponent
 from .ui_components import ConsoleComponent
 from .error_handler import handle_exceptions
@@ -10,15 +9,34 @@ console = ConsoleComponent()
 
 
 def print_banner():
-    """Print a stylish banner using BannerComponent"""
+    """Print a banner"""
     banner.print_banner()
+
+def _version_callback(value: bool):
+    if value:
+        from . import __version__
+        import surfgram
+        
+        typer.echo(
+            f"Surfgram version: {surfgram.__version__}\n"
+            f"Surfgram CLI version: {__version__}",
+        )
+        raise typer.Exit()
 
 
 @app.callback()
 def callback(
     no_graphics: bool = typer.Option(
         False, "--no-graphics", help="Disable ASCII banner display and all the graphics"
-    )
+    ),
+    version: bool = typer.Option(
+        False,
+        "--version",
+        "-v",
+        help="Show version",
+        callback=_version_callback,
+        is_eager=True,
+    ),
 ):
     """Global options for Surfgram CLI"""
     if not no_graphics:
@@ -32,9 +50,10 @@ def new(
     bot_name: str,
     full_trace: bool = typer.Option(False, help="Show full error traceback"),
 ):
+    """Create a new bot"""
+    
     from surfgram_cli.manager import BotManager
-
-    """Create a new bot directory with a template."""
+    
     console.print_operation_header("🤖 Creating New Bot")
     token = console.prompt("🔑 Please enter your bot token", hide_input=True)
 
@@ -54,9 +73,10 @@ def delete(
     bot_name: str,
     full_trace: bool = typer.Option(False, help="Show full error traceback"),
 ):
+    """Delete the specified bot"""
+    
     from surfgram_cli.manager import BotManager
 
-    """Delete the specified bot directory."""
     console.print_operation_header("🗑️ Delete Bot")
 
     if console.confirm(
@@ -104,18 +124,16 @@ def run(
         show_default=True,
     ),
 ):
-    """Run a Telegram bot with production-grade error handling."""
+    """Run the bot"""
     from surfgram_cli.manager import BotManager
     from pathlib import Path
 
     console.print_operation_header("🚀 Bot Startup")
 
-    # Resolve bot directory
     bot_dir = Path(bot).resolve() if bot else Path.cwd().resolve()
     if not config:
         config = BotManager.find_config(str(bot_dir))
 
-    # Validate config format before proceeding
     try:
         module_part, class_part = config.rsplit(".", 1)
         if not module_part or not class_part:
@@ -130,7 +148,6 @@ def run(
         debug=debug, on_reload=autoreload, bot=str(bot_dir), config=config
     )
 
-    # Execute with proper error handling
     BotManager.run_bot(
         bot=str(bot_dir), config=config, debug=debug, on_reload=autoreload
     )
