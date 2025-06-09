@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "surfgram-cli"
-version = "1.2.0"
+version = "1.2.1"
 description = "CLI tool for Surfgram Telegram bot framework"
 authors = ["anybody <help.surfgram@email.com>"]
 license = "MIT"
@@ -22,7 +22,7 @@ keywords = [
     "devtools",
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
