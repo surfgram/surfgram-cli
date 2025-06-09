@@ -10,7 +10,7 @@ console = ConsoleComponent()
 
 
 def print_banner():
-    """Print a stylish banner using BannerComponent"""
+    """Print a banner"""
     banner.print_banner()
 
 
@@ -32,7 +32,7 @@ def new(
     bot_name: str,
     full_trace: bool = typer.Option(False, help="Show full error traceback"),
 ):
-    """Create a new bot directory with a template."""
+    """Create a new bot"""
     
     from surfgram_cli.manager import BotManager
     
@@ -55,7 +55,7 @@ def delete(
     bot_name: str,
     full_trace: bool = typer.Option(False, help="Show full error traceback"),
 ):
-    """Delete the specified bot directory."""
+    """Delete the specified bot"""
     
     from surfgram_cli.manager import BotManager
 
@@ -106,18 +106,16 @@ def run(
         show_default=True,
     ),
 ):
-    """Run a Telegram bot with production-grade error handling."""
+    """Run the bot"""
     from surfgram_cli.manager import BotManager
     from pathlib import Path
 
     console.print_operation_header("🚀 Bot Startup")
 
-    # Resolve bot directory
     bot_dir = Path(bot).resolve() if bot else Path.cwd().resolve()
     if not config:
         config = BotManager.find_config(str(bot_dir))
 
-    # Validate config format before proceeding
     try:
         module_part, class_part = config.rsplit(".", 1)
         if not module_part or not class_part:
@@ -132,7 +130,6 @@ def run(
         debug=debug, on_reload=autoreload, bot=str(bot_dir), config=config
     )
 
-    # Execute with proper error handling
     BotManager.run_bot(
         bot=str(bot_dir), config=config, debug=debug, on_reload=autoreload
     )
