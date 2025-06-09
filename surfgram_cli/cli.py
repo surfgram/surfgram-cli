@@ -32,9 +32,10 @@ def new(
     bot_name: str,
     full_trace: bool = typer.Option(False, help="Show full error traceback"),
 ):
-    from surfgram_cli.manager import BotManager
-
     """Create a new bot directory with a template."""
+    
+    from surfgram_cli.manager import BotManager
+    
     console.print_operation_header("🤖 Creating New Bot")
     token = console.prompt("🔑 Please enter your bot token", hide_input=True)
 
@@ -54,9 +55,10 @@ def delete(
     bot_name: str,
     full_trace: bool = typer.Option(False, help="Show full error traceback"),
 ):
+    """Delete the specified bot directory."""
+    
     from surfgram_cli.manager import BotManager
 
-    """Delete the specified bot directory."""
     console.print_operation_header("🗑️ Delete Bot")
 
     if console.confirm(
