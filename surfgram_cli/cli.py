@@ -1,5 +1,4 @@
 import typer
-import os
 from .ui_components import BannerComponent
 from .ui_components import ConsoleComponent
 from .error_handler import handle_exceptions
@@ -13,12 +12,31 @@ def print_banner():
     """Print a banner"""
     banner.print_banner()
 
+def _version_callback(value: bool):
+    if value:
+        from . import __version__
+        import surfgram
+        
+        typer.echo(
+            f"Surfgram version: {surfgram.__version__}\n"
+            f"Surfgram CLI version: {__version__}",
+        )
+        raise typer.Exit()
+
 
 @app.callback()
 def callback(
     no_graphics: bool = typer.Option(
         False, "--no-graphics", help="Disable ASCII banner display and all the graphics"
-    )
+    ),
+    version: bool = typer.Option(
+        False,
+        "--version",
+        "-v",
+        help="Show version",
+        callback=_version_callback,
+        is_eager=True,
+    ),
 ):
     """Global options for Surfgram CLI"""
     if not no_graphics:
